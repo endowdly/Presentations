@@ -1,0 +1,30 @@
+Framework:
+    ✔ Test nodejs @done(19-03-13 16:00)
+    ✔ Install asciidoctorjs @done(19-03-13 16:00)
+    ✔ Install asciidoctor-revealjs @done(19-03-13 16:00)
+
+Converter:
+    -- convert.js
+    ✔ New @done(19-03-13 16:01)
+
+Outline:
+    -- outline.txt
+    ✔ New @done(19-03-13 16:07) 
+    ✔ Set skeleton @started(19-03-13 16:15) @done(19-03-13 16:20) @lasted(5m1s)
+
+Presentation:
+    -- presentation.adoc
+    ✔ New @done(19-03-13 16:03)
+
+    Write:
+    Convert:
+
+Build:  
+    ✔ convert.ps1 @started(19-03-14 09:15) @done(19-03-14 14:55) @lasted(5h40m29s)
+    ✔ convert.bat @done(19-03-14 15:28)
+    
+FileWatcher: @low 
+    ✘ ignoreFile.psd1 @started(19-03-14 15:37) @cancelled(19-03-14 15:38) @wasted(1m48s)
+    ✔ .ignore @started(19-03-14 15:38) @done(19-03-14 15:39) @lasted(1m49s)
+    ✔ fileWatcher.ps1 @started(19-03-14 15:39) @done(19-03-15 14:16) @lasted(22h37m17s)
+    ✔ startFileWatcher.bat @done(19-05-10 10:37)

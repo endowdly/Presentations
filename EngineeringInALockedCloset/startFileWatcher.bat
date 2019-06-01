@@ -1,0 +1,3 @@
+@ECHO OFF
+Echo Starting FileWatcher...
+START powershell.exe -NoLogo -NoProfile -NoExit -ExecutionPolicy Bypass -Command "& ./fileWatcher -Log"

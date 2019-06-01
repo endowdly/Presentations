@@ -1,0 +1,262 @@
+What is this
+    YES
+        Talk about enabling problem solving
+        Description of the tools to facilitate that
+        Explanation of how to use them
+
+    NO
+        This is not a coding class
+        This is not an introduction to coding with PowerShell nor C#
+    
+    BUT
+        There will be code snippets and dicussion about their significance 
+
+Background
+    Who here has to work with a lot of data?
+    From a discussion about F#...
+
+Overview
+    Who is this guy
+    Who is this for
+    What are we talking about
+        PowerShell
+        C#
+        And how we can use those
+    How can I get it
+    When and where can we use this stuff
+    Why is this important, or what are the advantages of these things?
+    A note on F#
+    Questions/Demonstrations
+
+Introduction
+    BS EE
+    Hired 2013 to WXQS
+    Deployed with MTRC and moved to WXQT
+    Deployed with MTRC twice more
+    But in between I have used PowerShell and C# to do simulation and analysis
+
+Who are the targets?
+    Anyone who is comfortable with C/C++ but wants an easier time
+    Anyone who is sick of MATLAB
+    Anyone who is tired of the IT gap
+    Engineers/Scientists who need fast, robuts libraries and programs they can make quickly
+    Especially people working on NMCI Windows 10 machines
+    New hires and interns
+
+What is PowerShell
+    Task automation and configuration management framework that is primarily a command-line shell and a scripting language.
+    Designed by Microsoft and is integral software to _every_ Windows release.
+    First released late 2006
+    Version 6.1.1 late 2018 and is still actively developed
+    It is now open-source and cross platform and runs on .NET Framework and .NET Core
+    It is now Microsoft's primary scripting framework, replacing VBScript, JavaScript, and batch files
+
+    Command Line Shell
+        Processes objects
+        It does everything bash and cmd.exe do but _more_ and _better_
+        Runs in muliple hosts
+        Can execute many commands
+            Cmdlets (.NET programs that link compiled libraries to the command line)
+            Scripts (.ps1)
+            Functions 
+            Exectuables (to include: .bat, .cmd, .com, .cpl, .js, .msc, .vbs...) 
+        Built-in and customizable tab completion
+        Robust aliasing
+        Named and positional parameters, with intrinsic support for dynamic parameters
+        Very powerful formatting control of data types and host output 
+        Modular: Modules and Providers
+
+    Scripting Language
+        C# Lite with heavy Perl and Kornshell influence
+        Interpreted
+        Supports asyncronous and parallel operations
+        Primary paradigm is imperative and object-oriented
+        Supports reflective, functional, and pipelined paradigms. Very flexible!
+        Safely, strongly, and outwardly dynamically typed (it's really statically typed)
+        Danger: Dynamic scoping!
+    
+    Task Automation and Configuration
+        Full access to .NET
+        Full access to COM and WMI
+        Some access to WS-Management and CIM
+        Desired State Configuration built-in
+        Provides hosting API for embedding into other apps (like Microsoft SQL Server)
+        Background jobs
+        Schedule jobs
+        Event handling
+        Remoting
+        Strong security features
+
+    [snippet][]
+    [screenshot][]
+
+What is C#
+    General-purpose, multi-paradigm programming language that is strongly typed and lexically scoped
+    It is primarily imperative and object-oriented
+    But, newer versions are focusing on declarative, functional, and generic programming
+    Designed by Microsoft and is integral to _every_ Windows release, _to include its compiler_
+    First released in 2000
+    Last release was version 7.3 in May 2018
+    C# is standardized (ECMA & ISO) and many some of its compilers are open-source
+    It is now cross-platform
+    It is now the primary code language used Microsoft wide
+
+    What is it good at?
+        Rapid production and productivity
+            Native garbage collection
+            Meta-programming
+            True generics
+            Huge standard library
+            Allows for native and managed code 
+            Highly integrated
+            Composable & Modular
+            Pretty 
+        Native Desktop Applications and GUIs
+        Parallel operations
+        Portability
+        Games (Unity & Godot)
+        Simulation & Modeling
+        ...and it's good at writing PowerShell Cmdlets
+
+    [snippet][] 
+    [screenshot][]
+
+How do we get these cool toys?
+    They are already on your computer!
+
+    Windows 10 ships with 32bit and 64bit versions of
+        powershell.exe 
+        powershell_ise.exe
+        csc.exe 
+    
+    .Net Core has 64bit versions of 
+        pwsh.exe
+    
+    Other C# compilers are available 
+        Rosyln
+        Mono 
+        Xamarin 
+
+When and where can I use them?
+    There are essential parts to the Windows ecosystem, and are available always, anytime. 
+    They are also available on major Linux distributions through the .NET Core SDK.
+
+    PowerShell
+        Start -> Windows PowerShell
+        Run -> 'powershell'
+        C:\Windows\System32\PowerShell\v1.0\powershell.exe
+        C:\Windows\SysWOW64\PowerShell\v1.0\powershell.exe
+    
+    CSC 
+        C:\Windows\Microsoft.NET\Framework\<version>\csc.exe
+        C:\Windows\Microsoft.NET\Framework64\<version>\csc.exe 
+
+Why is this important (full circle)
+    . Analysis of large data sets with complex queries can take a long time
+    . Simulating and modelling complex scenarios can be hard to design and execute
+
+    Getting specialized software and coding framework to alleviate those can be problematic:
+        Overarching regulations and policies
+        Licensing and costs
+        IT bottlenecks
+        
+    PowerShell and C# are solutions!
+
+Analysis and Data Modeling
+    PowerShell is good for small, quick inspection
+
+    . Natively load CSV, JSON, string data, and PowerShell Data files as objects
+    . Extentions exist for other formats
+    . Objects are easy to inspect 
+
+        [snippet][]
+        [screenshot][]
+
+    C# is good for everything else 
+
+    . Natively supports many data formats
+    . Parsers are easy to build or implement
+    . LINQ allows for side-effect free queries and functions
+    . Steppability using `yield` allows for complex query control
+    . Robust data and statistics libraries available
+    . Easy to implemnt custom libraries -- Hidden Markov Models
+    . Getting easier with every version update
+
+        [snippet][]
+        [screenshot][]
+
+Simulation 
+    Monte Carlo Simulation
+    Wave Simulation
+    Particle Simulation
+    Discrete Event Simulation (Growth)
+    Gravity Simulation
+    Doppler Simulations
+
+    Easy to incorporate results to visuals or graphics!
+
+        [snippet][]
+        [screenshot][]
+
+Wonder Twin Powers, Activate!
+    Compilation without MSBuild or Visual Studio
+        Folder structure [snippet]
+        MyScript [snippet]
+        Psake [snippet]
+    Library Testing
+        Setup [snippet]
+        Example [screenshot]
+    Cmdlets
+        This, not this [screenshot]
+        [snippet]
+
+Advantages 
+    Native support
+    Compiled and optimized
+    GUI building is easy!
+    Productive! 
+    Familiar but better (C++)
+
+    Versus Python
+        Zoom! JIT not part of it
+        IronPython still isn't as integrated and not updated
+        Python does not include batteries
+        No installation
+    
+    Versus MATLAB
+        Zoom!!!!  
+        Free
+        No installation
+        Not as obscure
+    Versus Java 
+        Generics
+        Anonymous Functions
+        Delgates
+        Lambdas
+        No installation (JRE no JDK) 
+
+Disadvantages
+    Plotting options are anemic 
+    Out of the box numerical libraries are weak (but improving)
+    Not as fast as C or C++
+    
+Tools
+    PowerShell ISE
+    Notepad ¯\_(ツ)_/¯
+
+    Visual Studio Code
+    Visual Studio 2017 Community
+
+    dotnet
+    nuget
+
+A Quick Note on F#
+    F# is C# more purely function brother
+    Much friendlier towards math and data science
+    Much easier to use numerical and machine learning libraries
+
+    But doesn't ship out of the box
+    DADMS?
+
+    [snippet][] 
+        
