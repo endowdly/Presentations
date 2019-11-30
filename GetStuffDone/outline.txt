@@ -1,0 +1,19 @@
+- overview or a recap of where the tools are on a virgin NMCI windows 10
+machine (powershell.exe and csc.exe) (1 min)
+- discuss the interplay between CLR, CLI, .NET, their version and the
+language versions of PowerShell and C# (3 min)
+- discuss cli arguments for the executables and how to use them in cmd.exe
+and powershell.exe (5 min)
+- discuss the difference between a process and a host (1 min)
+- introduce security and execution policy for PowerShell (5 min)
+- quick overview of the PowerShell language and syntax (10 min)
+- quick overview of the C# language and syntax (5 min)
+- live demo writing a mathematical library in notepad and compiling (5 min) 
+- live demo writing a cmdlet (command line program) to use that library in
+notepad and compiling (5 min)
+- live demo using that cmdlet in PowerShell (3 min)
+- show and tell of what you can write in C# and PowerShell (relevant code
+and programs I have written for science and engineering) (3 min)
+- brief discussion of build systems in PowerShell YOU can write (for
+compiling C#) (2 min)
+- remaining time for questions (~12 min)

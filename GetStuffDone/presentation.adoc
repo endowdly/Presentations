@@ -1,0 +1,624 @@
+= Using PowerShell and C#: Getting it Done
+Ryan Dowd <ryan.dowd@navy.mil> 
+:revealjs_theme: beige
+:revealjs_transition: convex
+:revealjs_center: false
+:revealjs_width: 1920
+:revealjs_height: 1024
+:revealjs_defaulttiming: 240
+:imagesdir: assets
+:source-highlighter: highlightjs
+
+:experimental:
+
+== !
+
+image::warning.png[Warning, 100, 100, role="center"]
+
+== What is this? 
+
+[none, .step]
+* ✔️
+** An introduction to coding with PowerShell
+** An introduction to coding with C#
+** An introduction to the command-line tools to facilate the above
+** A live demo of coding with C# and PowerShell
+* ❌
+** A guide to using PowerShell for command-line shell use nor system admininstrator tasks
+** The who, what, where, when or why you may want to use these things
+
+== Part 1
+
+https://endowdly.github.io/Presentations/EngineeringInALockedCloset/presentation.html
+
+== Overview
+
+[none] 
+* Who is this guy?
+* Who is this talk for?
+* What are we talking about?
+* Command-Line Tools Recap
+* Important Things To Know Before We Start™
+* C# & PowerShell Syntax for Beginners
+* How to write and compile a library 
+* How to write and compile a cmdlet
+* How to use cmdlets and libraries in PowerShell
+* Building without MSBuild or Visual Studio
+* Questions/Demonstrations
+
+== Introduction 
+
+I am Ryan 
+
+image::babygroot.gif[Groot, 100, 100, role="center"]
+
+[.notes]
+--
+* BS EE USMA 2009
+* Started Crane 2013 WXQS
+* Moved to WXQT
+* Deployed with MTRC 3x
+* Have used C# for simulation and modeling
+* Use Powershell e'ryDAY
+--
+
+== Target Audience
+
+[none]
+* Anyone who is familiar with C/C++ but wants an easier time
+* Anyone who is sick of MATLAB
+* Anyone who is tired of IT roadblocks
+* Anyone who works on a Windows 10 machine
+* Engineers and scientists who need fast, robust libraries and programs _they_ can make
+* New hires and interns
+
+== Why am I doing this to you again?
+
+[none]
+* The last presentation was the who, what, where, why, and when
+* This is the how
+
+== Command-Line Tools
+
+=== powershell.exe
+
+menu:Start[Windows PowerShell > Windows PowerShell] +
+menu:Start[Run] -> 'powershell' -> btn:[Run]
+
+`C:\Windows\System32\PowerShell\v1.0\powershell.exe` +
+`C:\Windows\SysWOW64\PowerShell\v1.0\powershell.exe`
+
+=== Important Options
+
+`-` _or_ `/` can be used for option switches.
+
+`-ExecutionPolicy`:: Allows you to set the process ExecutionPolicy for the process call.
+`-File`:: Sources the script file at the path.
+`-Command`:: Executes a command before any other actions.
+`-NoProfile`:: Does not load any user profiles during the process execution.
+`-Help`:: Gets you better definitions then mine. 
+
+**Example:** + 
+`powershell.exe -ExecutionPolicy Bypass -NoProfile -File build.ps1`
+
+=== csc.exe
+
+`C:\Windows\Microsoft.NET\Framework\<version>\csc.exe` +
+`C:\Windows\Microsoft.NET\Framework64\<version>\csc.exe`
+
+=== Important Options
+
+_`csc.exe` takes the input files as the arguments..._ +
+`-` _or_ `/` can be used for option switches.
+
+`/target:library`:: Build a library. Use `exe` for a console exectuable.
+`/doc:<file>`:: Documentation file built from comments.
+`/reference:<file list>`:: Add references from specified assemblies to use in compilation.
+`/debug[+/-]`:: Emit dubugging information.
+
+=== Important Options
+
+`/optimize[+/-]`:: Enable optimization for the detected or specified platform.
+`/checked[+/-]`:: Overflow checks.
+`/define:<symbol list>`:: "Preprocessor" defintions here.
+`/out:<file>`:: Specify the output file and path.
+`/help`:: Again, better help than I just gave.
+
+**Example:** + 
+`csc.exe /t:library /r:../projectA/assemblies/reference.dll /checked+ /d:RECURSE /o+ /out:something.dll`
+
+== Understanding .NET
+
+The .NET Framework is designed to fulfill the following objectives: 
+
+* To provide a consistent object-oriented programming environment 
+* To provide a code-execution environment that minimizes software deployment and versioning conflicts 
+* To provide a code-execution environment that promotes safe execution of code 
+* To provide a code-execution environment that eliminates the performance problems of scripted or interpreted environments 
+* To make the developer experience consistent across widely varying types of apps 
+* To build all communication on industry standards to ensure that code based on the .NET Framework integrates with any other code
+
+=== !
+
+image::cli.png[role="center"]
+
+=== Version Hell
+
+CLR Version:: The runtime version supported.
+Framework Version:: The Framework version. Typically indicates the CLR version and what libraries are included.
+Compiler/Interpreter Version:: The actual software version of the compiler. The compiler can only operate with certain Framework versions and can only compile certain language versions. 
+<Language> Version:: The version of the syntax supported. You may write valid C# 7.0 code, but if you don't have the most recent compiler, you will not be able to compile the code. You may write valid PowerShell 5.0 code, but an older interpreter may not be able to compile it.
+
+=== What should you be working with?
+
+Windows 10 defaults:
+
+[none]
+* CLR 4
+* Framework 4.7+
+* CSC 4.8.3752.0 
+* C# 5
+* PowerShell 5.1
+
+== Process or Host?
+
+image::pah.png[800, 800, role="center"]
+
+=== !
+
+image::hap.png[800, 800, role="center"]
+
+== PowerShell Execution Policy
+
+"Windows PowerShell execution policies let you determine the conditions under which Windows PowerShell loads configuration files and runs scripts. The execution policy is not a security system that restricts user actions. For example, users can easily circumvent a policy by typing the script contents at the command line when they cannot run a script. Instead, the execution policy helps users to set basic rules and prevents them from violating them unintentionally."
+-- Microsoft, about_Execution_Policies
+
+=== A Rundown
+
+Precedence (Highest to Lowest)
+
+[none]
+* **MachinePolicy**
+* **UserPolicy**
+* Process (or powershell/pwsh.exe -ExecutionPolicy)
+* CurrentUser
+* **LocalMachine**
+
+=== !
+
+image::powerShellExecutionPolicy.png[role="center"]
+
+=== What's this mean? 
+
+Add to your profile: 
+
+`Set-ExecutionPolicy Bypass -Scope CurrentUser`
+
+Or whenever you spool a process:
+
+`powershell.exe -ExecutionPolicy Bypass`
+
+=== Important
+
+A child process (process spawned from another) will inherit the ExecutionPolicy of its parent!
+
+== Syntax 
+
+You ever use C/{cpp} or Java?
+
+=== Hello World!
+
+[source,c#]
+----
+using System;
+
+class Hello
+{
+    static void Main()
+    {
+        Console.WriteLine("Hello World!");
+    }
+}
+----
+
+=== !
+
+"C# programs can consist of one or more files. Each file can contain zero or more namespaces. A namespace can contain types such as classes, structs, interfaces, enumerations, and delegates, in addition to other namespaces."
+-- Microsoft, C# Docs
+
+=== !
+
+[source,c#]
+----
+// Because the compiler easily accepts many files, these usually go into their own file across a shared namespace
+namespace YourNamespace
+{
+    using System;
+    
+    class YourClass
+    {
+    }
+
+    struct YourStruct
+    {
+    }
+
+    interface IYourInterface 
+    {
+    }
+
+    delegate int YourDelegate();
+
+    enum YourEnum 
+    {
+        Option1,
+        Option2
+    }
+
+    namespace YourNestedNamespace
+    {
+        // this is pretty frowned upon
+
+        struct YourStruct 
+        {
+        }
+    }
+
+    class YourMainClass
+    {
+        static void Main(string[] args) 
+        {
+            //Your program starts here...
+        }
+    }
+} 
+----
+
+=== Types and Variables
+
+* Value
+** Simple Types
+*** Signed Integral: `sbyte`, `short`, `int`, `long`
+*** Unsigned Integral: `byte`, `ushort`, `uint`, `ulong` 
+*** Unicode Characters: `char`
+*** IEEE Floats: `float`, `double`
+*** High precision: `decimal`
+*** Booleans: `bool`
+** Enum 
+** Struct
+** Nullables
+
+=== Types and Variables
+
+* Reference
+** Classes 
+*** base is `object` 
+*** Unicode strings: `string`
+*** User defined types
+** Interfaces
+** Arrays
+** Delegates (and Actions)
+
+=== Expressions
+
+Operands + Operator = Expressions
+
+[source,c#]
+----
+var n = x + y * z; 
+var b = x > y ? true : false; 
+var maybe = x ?? y;
+----
+
+All expression are _left-associative_ except for the null-coalessing operators `??` and `??=`
+
+=== Statements
+
+Mostly standard with a few extras. Here's a list:
+
+[none]
+* `const`
+* `if-else`
+* `switch`
+* `while`
+* `do`
+* `for`
+* `foreach`
+* `break`
+* `continue`
+* `goto`
+* `return`
+* `yield`
+
+=== Statements
+
+* `throw`
+* `try-catch[-finally]`
+* `using`
+* `checked` / `unchecked`
+* `lock`
+
+== PowerShell Syntax
+
+PowerShell is _really a fancy wrapper_ for C#.
+
+That's why I call it _C# Lite_.
+
+=== Hello World!
+
+[source, powershell]
+----
+'Hello World!'
+
+# Or explicitly
+Write-Output 'Hello World!'
+
+# Or closer to the curtain...
+[Console]::WriteLine('Hello World!');
+----
+
+=== !
+
+Understand PowerShell is:
+
+[none]
+* Object-Oriented and output is object-based
+* The command family is extensible 
+* As a scripting language it is imperative and executes from first line to last line
+
+=== ! 
+
+Cmdlets:
+
+* Cmdlets use verb-noun names to reduce command memorization
+* Cmdlets use standard parameters
+
+[source]
+----
+PS> Get-Command -Verb Get
+
+CommandType     Name                            Definition
+-----------     ----                            ----------
+Cmdlet          Get-Acl                         Get-Acl [[-Path] <String[]>]...
+Cmdlet          Get-Alias                       Get-Alias [[-Name] <String[]...
+Cmdlet          Get-AuthenticodeSignature       Get-AuthenticodeSignature [-...
+Cmdlet          Get-ChildItem                   Get-ChildItem [[-Path] <Stri...
+...
+
+PS> Get-Command -Noun Service
+
+CommandType     Name                            Definition
+-----------     ----                            ----------
+Cmdlet          Get-Service                     Get-Service [[-Name] <String...
+Cmdlet          New-Service                     New-Service [-Name] <String>...
+Cmdlet          Restart-Service                 Restart-Service [-Name] <Str...
+Cmdlet          Resume-Service                  Resume-Service [-Name] <Stri...
+Cmdlet          Set-Service                     Set-Service [-Name] <String>...
+Cmdlet          Start-Service                   Start-Service [-Name] <Strin...
+Cmdlet          Stop-Service                    Stop-Service [-Name] <String...
+Cmdlet          Suspend-Service                 Suspend-Service [-Name] <Str...
+...
+----
+
+=== ! 
+
+There is no standard script and no boilerplate necessary! 
+
+Script to your hearts desire!
+
+"I can show you the world"
+-- Aladdin
+
+=== Expressions
+
+_Everything is an expression!_
+
+This is great because it means you can assign the result of any code block to variable!
+
+[source,powershell]
+----
+$canProcess = 
+    if ($isTrue) {
+        $true
+    }
+    else {
+        $false
+    }
+----
+
+=== Keywords
+
+Since PowerShell isn't statement based, it relies on keywords to control flow. These keywords are parsed, so their syntax and structure is important.
+
+[none]
+* `begin`
+* `break`
+* `class`
+* `continue`
+* `data`
+* `do-while`
+* `do-until`
+* `dynamicParam`
+* `end`
+* `enum`
+
+=== Keywords
+
+* `exit`
+* `filter`
+* `for`
+* `foreach`
+* `function`
+* `hidden`
+* `if-elseif-else`
+* `in`
+* `param`
+* `process`
+* `return`
+
+=== Keywords
+
+* `static`
+* `switch`
+* `throw`
+* `try-catch[-finally]`
+* `using`
+* `while`
+
+=== Operators
+
+Arithmetic::
+    `+`, `-`, `/`, `*`, `%`, including unary operators
+Assignment:: 
+    `=`, `+=`, `-=`, `*=`, `/=`, `%=`
+Comparison::
+    `-eq`, `-ne`, `-gt`, `-lt`, `-ge`, `-le`,
+Logical::
+    `-and`, `-or`, `-xor`, `-not`, `!`
+
+=== Operators
+
+Redirection::
+    `>>`, `>`, `2>&1`... 
+Array/String::
+    `-split`, `-join`
+Type::
+    `-is`, `-isnot`, `-as`
+
+=== Special Operators
+
+Array Sub-Expression::
+    `@()`, returns the expression as an array even if only has one member.
+Hashtable Sub-Expression::  
+    `@{}`, returns the scriptblock as a hashtable.
+Array::
+    `,` as a binary operator, creates an array. As a unary operator creates an array with one member.
+Sourcing::
+    `.`, elevates the object into the parent scope.
+
+=== Special Operators
+
+Call::
+    `&`, executes the object as a block of code in seperate scope, returning the result.
+Cast::
+    `[]`, Converts or limits objects to the specified type. If the objects cannot be converted, PowerShell generates an error.
+Index::
+    `[]`, Selects objects from indexed collections.
+Pipeline:: 
+    `|`, When the output includes more than one object, the pipeline operator sends the objects one at a time.
+
+=== Special Operators 
+
+Member Access::
+    `.`, Accesses the properties and methods of an object.
+Range::
+    `..`, Creates an integer sequence with an upper and lower bound.
+Static Member Access::
+    `::`, Used in combination with a casted type to access static members and methods of a .NET type.
+Subexpression:: 
+    `$()`, Returns the result of one or more statements, executed in a child scope. 
+
+=== Functions
+
+[source,powershell]
+----
+function Get-Sum {
+    param([Parameter(ValueFromPipeline)] [int] $Number)
+
+    begin {
+        $acc = 0 
+    }
+    process {
+        $acc += $Number 
+    }
+    end {
+        $acc
+    } 
+}
+----
+
+=== Advanced
+
+Developers cried for access to underlying `PSObjects`. As of PowerShell 5.0, Microsoft complied, allowing...
+
+[source,powershell]
+----
+enum {
+    Option1,
+    Option2
+}
+
+class MyClass {
+    hidden [int] $Secret = 42
+    static [MyClass[]] $Display = @()
+    [string] $Name
+
+    MyClass([string] $s) {
+        $this.Name = $s
+
+        [MyClass]::Display += $this
+    }
+
+    static [void] WriteThings() {
+        foreach ($thing in [MyClass]::Display) {
+            Write-Warning ("This thing exists: " + ($thing.Name)) 
+        } 
+    } 
+}
+----
+
+=== Differences
+
+[source,powershell]
+----
+if ($isThing) {
+    Invoke-Something 
+}
+elseif ($isSomething) {
+    Invoke-SomethingElse
+}
+else {
+    # Forget it
+    Exit-Process
+}
+----
+
+[source,powershell]
+----
+$x = 1, 2, 78, 0
+
+do {
+    $count++
+    $a++
+} until ($x[$a] -eq 0) 
+----
+
+== Demo
+
+== Building without MSBuild or Visual Studio!?
+
+Have you heard of `make`, `cmake`, `rake`?
+
+C# has `cake`. F# has `fake`.
+
+PowerShell has:
+
+* `psake`
+* `invoke-build`
+* custom solutions galore!
+
+== Upgrading
+
+* Visual Studio
+* Visual Studio Code + .NET Core SDK
+
+== Questions?
+
+image::rocket.gif[role="center"]
+
+
+
+
+
+
+
