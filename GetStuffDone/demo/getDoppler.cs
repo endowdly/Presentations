@@ -2,7 +2,6 @@ namespace EWSGDemo
 {
     using System;
     using System.Management.Automation;
-    using System.Windows; 
 
     // Verb Categories:
     // VerbsCommon
@@ -40,7 +39,7 @@ namespace EWSGDemo
         { 
             // station = new DopplerStation(location);
             // var doppler = station.Doppler()
-            WriteObject(doppler); 
+            WriteObject(); 
         }
     }
 

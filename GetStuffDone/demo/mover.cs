@@ -1,6 +1,7 @@
 namespace EWSGDemo 
 {
-    using System.Windows;
+    using System.Drawing;
+
     public struct Mover
     {
         public readonly Point Location;

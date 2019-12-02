@@ -1,17 +1,17 @@
 namespace EWSGDemo
 {
     using System;
-    using System.Windows;
 
     public class DopplerStation
     {
         public Point Location;
 
-        public static double Doppler(Point location, double speed)
+        public double Doppler(Point location, double speed)
         {
             var relativePolarAngle = GetRelativePolarAngle(location);
             var relativeVelocity = GetRelativeVelocity(speed, relativePolarAngle);
             // 2 * v_rel * Cos(polAngle_rel.Radians) * (1/c0);
+            // return 2 * relativeVelocity;
 
         }
 
