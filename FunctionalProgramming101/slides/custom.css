@@ -1,3 +1,7 @@
 #babygroot {
-    transform: scale(0.5, 0.5);
+    transform: scale(0.5);
+}
+
+#nightmare {
+    transform: scale(0.83);
 }

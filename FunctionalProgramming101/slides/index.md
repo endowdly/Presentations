@@ -12,16 +12,17 @@ Presented by: Ryan Dowd
 
 ***
 
-## About
+## Getting Started
 
 This presentation is built with [FsReveal](https://fsprojects.github.io/FsReveal/index.html).
 FsReveal is an F# frontend for [Reveal.js](https://github.com/hakimel/reveal.js).
 
 Navigating these waters:
 
-- `Spacebar`, `l`, or `n` to go forward
-- `h` or `p` to go backward
+- `Spacebar`, or `n` to go forward
+- `p` to go backward
 - `Esc` to see an overview of all slides
+- `f` to go full screen
 
 ***
 
@@ -37,6 +38,8 @@ Navigating these waters:
   - Higher-order functions
   - Recursion
 - But what about...?
+- Last Points
+- Questions
 
 ***
 
@@ -44,12 +47,8 @@ Navigating these waters:
 
 I am Ryan
 
-<!--
-    Instead of trying to physically transform the photo,
-    just use css to quickly scale the image
--->
-
 <img id="babygroot" src="images/babygroot.gif">
+<!-- Grafera 2014, modified by me -->
 
 ' BS EE USMA 2009
 ' Started Crane in 2013 with WXQS
@@ -68,20 +67,20 @@ I am Ryan
 
 ## What is Functional Programming?
 
-Functional programming is a declaritive programming paradigm.
-It focuses on designing programs as an evaluation of mathmatical functions.
+Functional programming (FP) is a declarative programming paradigm.
+It focuses on designing programs as an evaluation of mathematical functions.
 This focus drives the style away from state mutations and mutable data.
 
 ---
 
-### Wait... what!?
+### Wait... what?
 
 - Functions are passed around like variables
 - You don't change variables
 
 ***
 
-## Why do I care?
+## Why should I care?
 
 Do you work with lots of data?
 Do you work with lots of processors?
@@ -91,14 +90,14 @@ Of course you do!
 
 ---
 
-![fsharpCrunching](images/fsharpPtime.png)
+![fsharpCrunching](images/fsharpPtimeAn.png)
+<!-- Atkinson 2012, modified by me -->
 
 _Search-File:
-an FSharp cmdlt, optimized for parallel processing,
+an FSharp cmdlet, optimized for parallel processing,
 running in PowerShell_
 
-' Atkinson, "Rethinking findstr with F# and PowerShell".
-' PowerShell is intrepreted at runtime, to boot.
+' PowerShell is interpreted at runtime, to boot.
 ' The "dir | Select-String" command is also PowerShell; see the difference?
 
 ***
@@ -118,19 +117,27 @@ This structure will instruct a program how to change its state.
 Procedural programming and object-oriented programming are common imperative styles.
 A classic example of an imperative language is C.
 
+![C Logo](images/c.png)
+<!-- Kernighan and Ritchie 1978, cover -->
+
 The essence of imperative programming is the _execution of statements_.
 
-' What is an imperative language? A short list:
+' Other primarily imperative languages:
 ' Java, ECMAScript or JavaScript, and PHP
 ' Ada,
 ' Python/Ruby,
 ' and any assembly language.
+
+---
 
 ## Declarative Paradigm
 
 This structure declares the desired result as a series of expressions.
 Functional programming is a common declarative style.
 A classic example of a declarative language is Lisp.
+
+![Lisp Logo](images/lisp.png)
+<!-- Common-Lisp.net, n.d. -->
 
 The essence of declarative programming is the _evaluation of expressions_.
 
@@ -152,12 +159,12 @@ Let's clear that up by making some coffee, shall we?
 We'll make some coffee using the two different paradigms.
 Our design goal is to make a cup of coffee with two scoops of sugar.
 
----
-
-' Most of us drink it, so I thought it'd be a relatable example.
-' Example borrowed from Petricek, _Real World Functional Programming_, 5.
+' Image is mine
+' Example borrowed from Petricek, Real World Functional Programming, 5.
 ' Another way to think of this is functional is data-centric
 ' Imperative is behavior-centric
+
+---
 
 ## Object-Oriented Coffee
 
@@ -194,7 +201,7 @@ let makeCoffee coffeeStyle sugars =    // this is a function describing our goal
 let cuppa = makeCoffee Black 2         // The evaluation
 ```
 
-' Have to assume Coffee type exists!
+' Have to assume Coffee type exists and coffee is defined!
 
 ---
 
@@ -235,14 +242,12 @@ Functional programming can _easily_ solve those common issues.
 ### How, exactly?
 
 - Immutability prevents race conditions
-- Logic vice executions enables parrallism
-- Composible functions prevent spaghetti code
+- Logic vice executions enables parallelism
+- Composable functions prevent spaghetti code
 
 ***
 
 ## Core Concepts
-
-An more in-depth look at:
 
 - Immutability
 - Functions
@@ -274,7 +279,7 @@ WriteInt32(res);
 
 ### Immutable Mutable Example
 
-Now, pretend the compiler won't let us overwrite an initalized value.
+Now, pretend the compiler won't let us overwrite an initialized value.
 
 ``` csharp
 int x0 = GetInitialValue();
@@ -313,14 +318,21 @@ success or failure is immediately resolved (usually at compile time).
 
 ## Benefits of Immutability
 
-### Idempotent code!
+<!-- markdownlint-disable md013 -->
+
+### [Idempotent](https://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning) code!
+
+<!-- markdownlint-enable md013 -->
 
 ...whoa, chief, that's a big word!
 Blame [Benjamin Pierce](https://en.wikipedia.org/wiki/Benjamin_Peirce),
-an American mathmetician.
+an American mathematician.
 Around 1870, he coined the term to describe a function that is strictly repeatable.
 
 Idempotent code means the same input will _always_ return the same output.
+It's often called
+[referential transparency](https://en.wikipedia.org/wiki/Referential_transparency)
+now-a-days.
 
 ---
 
@@ -336,7 +348,10 @@ The downside, of course, is mutation can find a way!
 
 ---
 
-![LifeUh](images/life.png)
+<a href="https://vialjarhorn.tumblr.com/post/13562072311/my-piece-for-the-jp-show-at-gallery-nucleus">
+<img src="images/life.png">
+</a>
+<!-- Larriva 2011 -->
 
 ---
 
@@ -425,8 +440,6 @@ class Engineer:
 
 Dealing with metatables and metaclasses can be burdensome!
 
-' I call it floorplatre hell!
-
 ---
 
 As you can see from the structural examples,
@@ -439,7 +452,7 @@ We can't all be as cool as C\#.
 
 ## Shadowing
 
-To avoid floorplate hell...
+To avoid floor-plate hell...
 
 ``` lua
 -- Lua
@@ -457,17 +470,15 @@ end
 ```
 
 ' Shadowing aka copy-on-write.
-' This is Lua.
-' I chose it beause it looks like a psuedolanguage lol.
 ' Lua, incidentally,
-' also uses floorplate hell to implement structural enforcement via metatables.
+' also uses floor-plate hell to implement structural enforcement via metatables.
 ' A lot of modern functional languages actually do shadowing in the background!
 
 ***
 
 ## Functions
 
-The ideas and patterns of functional programming are rooted in mathmatical functions,
+The ideas and patterns of functional programming are rooted in mathematical functions,
 especially [lambda calculus](https://en.wikipedia.org/wiki/Lambda_calculus).
 
 ``` math
@@ -496,19 +507,16 @@ Therefore, purity allows functions to be optimized!
 
 <dl>
 
-<dt>Parallelization</dt>
+<dt>Concurrency</dt>
 <dd>Running tasks in parallel or in multiple threads</dd>
 
 <dt>Lazy evaluation</dt>
-<dd>Values only need to evaulated when they are needed</dd>
+<dd>Values only need to evaluated when they are needed</dd>
 
 <dt>Memoization</dt>
 <dd>Cache the result of a computation so it's only ever evaluated once</dd>
 
 </dl>
-
-With emergent technologies like more RAM and more cores,
-these optimizations can offer huge performance benefits!
 
 ---
 
@@ -544,7 +552,7 @@ SideEffectCity(out y, 3);  // y is now 3
 
 It is rather impossible to eliminate all side effects.
 So let's use some strategies to manage them!
-The easist to accomplish are _isolation_ and _avoidance_.
+The easiest to accomplish are _isolation_ and _avoidance_.
 
 ---
 
@@ -553,7 +561,7 @@ The easist to accomplish are _isolation_ and _avoidance_.
 ``` csharp
 // Avoid!
 Console.WriteLine("Enter your name");
-var name = Console.ReadLine(); 
+var name = Console.ReadLine();
 Console.WriteLine($"Hello {name}");  // This is something we can isolate!
 
 // Do instead
@@ -568,8 +576,7 @@ Well, I'll leave the implementation up to you, but you'd ideally want...
 ### Ideal I/O Isolation
 
 ![IsolatedIO](images/enrico.jpg)
-
-From Enrico Buonamo's book, _Functional C#_
+<!-- Buonanmo 2018 -->
 
 ---
 
@@ -580,8 +587,8 @@ tightly couples the behavior of a method to the caller:
 the caller then relies on the method to perform its side effect,
 and the callee relies on the caller to initialize its arguments!
 
-Basically, both methods must be aware of the implementantation details of the other;
-it is impossible to reason about the methods seperately.
+Basically, both methods must be aware of the implementation details of the other;
+it is impossible to reason about the methods separately.
 
 ---
 
@@ -637,7 +644,7 @@ You can more easily understand and control flow.
 
 ## How does abstraction help with correctness?
 
-Which looks more 'correct'?
+Which looks more correct?
 
 ``` csharp
 // Loop
@@ -668,10 +675,12 @@ It is about ranges and sums.
 
 Functional higher-order functions have proven to be so useful,
 they've bled over into imperative languages.
-The **big four** are certainly ubiqutious (they have their own Wikipedia pages) and
+The **big four** are certainly ubiquitous (they have their own Wikipedia pages) and
 you've surely seen them:
 
 ---
+
+<!-- markdownlint-disable md013 -->
 
 <dl>
 
@@ -692,7 +701,7 @@ Also flatMap, chain, collect, <a href="https://docs.microsoft.com/en-us/dotnet/a
 
 <dt><a href="https://en.wikipedia.org/wiki/Fold_(higher-order_function)">Fold</a></dt>
 <dd>Takes a structure, a seed, and a reducer function.
-Traverses the strucutre starting with a seed and applies the reducer.
+Traverses the structure starting with a seed and applies the reducer.
 Also <a href="https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.aggregate">Aggregate</a>, reduce.
 <a href="https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.sum">Sum</a> is a specific implementation of this.
 </dt>
@@ -701,6 +710,8 @@ Also <a href="https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable
 
 ' I haven't gone over monads and will not.
 ' They are slightly more advanced.
+
+<!-- markdownlint-enable md013 -->
 
 ---
 
@@ -731,7 +742,7 @@ Higher-order functions also enable
 [functional composition](https://fsharpforfunandprofit.com/posts/function-composition/),
 [currying](https://fsharpforfunandprofit.com/posts/currying/),
 [partial application](https://fsharpforfunandprofit.com/posts/partial-application/),
-and railroading.
+and [railroading](https://fsharpforfunandprofit.com/posts/recipe-part2/).
 These techniques and topics are little beyond an introduction,
 but I want you to be aware of them.
 Use your functions like LEGOs, and build exciting structures with them!
@@ -740,26 +751,241 @@ Use your functions like LEGOs, and build exciting structures with them!
 
 ## Recursion
 
+<a href="https://tumblr.safelyendangered.com/post/54680954204/oh-bother">
+<img id="nightmare" src="images/recursion.gif">
+</a>
+<!-- McCoy 2013 -->
+
+_It's the stuff of nightmares..._
+
+' Dale, William, "Recursion: The Pros and Cons". Published May 9, 2019. https://medium.com/@williambdale/recursion-the-pros-and-cons-76d32d75973a.
+
+---
+
 By now you've seen values that don't change.
 You've seen a rigid state.
 At this point, even a novice programmer may be asking,
 "So then how does anything change?
 How would a program progress?
-Are loops now useless!?"
+Without counters or mutation you can't loop or iterate anything!"
 
 Lo, not all is lost.
 For your savior lies in functions!
 Not only can functions call other functions,
 they can call **themselves**.
 
+---
+
+As a consequence of immutability and purity,
+functional languages utilize recursion because they have to!
+
+In functional languages,
+the strict purity allows compilers to use recursion more aggressively.
+Tail call optimizations and clever assembly ops keep performance nominal.
+
+---
+
+## Recursion vs. Iteration
+
+``` csharp
+// Classic iterative example
+public static int CalculateSumIteratively(int from, int to)
+{
+    int sum = from;
+
+    for (int i = 1; i <= to; i++)
+    {
+        sum += i;
+    }
+
+    return sum;
+}
+```
+
+---
+
+## Recursion vs. Iteration
+
+``` csharp
+// Although local mutation occurs, this function is still pure!
+public static int CalculateSumRecursively(int from, int to)
+{
+    int sum = from;
+
+    if (from < to)
+    {
+        from++;
+        return sum += CalculateSumRecursively(from, to);
+    }
+
+    return sum;
+}
+```
+
+---
+
+## Recursion vs. Iteration
+
+Can we refactor the last function to follow FP _more_ closely?
+
+``` csharp
+public static int CalculateSumRecursively(int from, int to) =>
+    (from < to)
+        ? from + CalculateSumRecursively(from + 1, to)
+        : from
+```
+
+---
+
+## Benefits of Recursion
+
+### Pros
+
+- Recursion is better at tree traversal
+- Recursion can add clarity to code
+- _With_ memoization, recursion can reduce time complexity
+
+---
+
+## Benefits of Recursion
+
+### Cons
+
+- Recursion needs more memory (recursion uses a lot of stack frames)
+- _Without_ an optimized compiler or memoization, recursion can be slow
+
 ***
 
-## Sources and References
+## Okay, but what about...
 
-<!-- markdownlint-disable MD013 -->
+---
 
-Atkinson, Lincoln. "Rethinking findstr with F# and PowerShell". Published October 03, 2012, https://docs.microsoft.com/en-us/archive/blogs/fsharpteam/rethinking-findstr-with-f-and-powershell.  
-Buonanno, Enrico. _Functional Programming in C#_. New York: Manning Publications, 2018.  
-Ford, Neal. "Content series: Functional thinking". Published August 30, 2011,  https://www.ibm.com/developerworks/java/library/j-ft5/.  
-Petricek, Tomas with Jon Skeet. _Real-World Functional Programming_. Greenwich, Conneticut: Manning Publications, 2010.
-Keuch, Christopher. Blog on Medium. Accessed April 11, 2020, https://medium.com/@cjkuech.
+### ...performance?
+
+#### Where FP does well:
+
+- Parallel computing (multi-thread, multi-processor)
+- High-memory hardware capitalizing on memoization (caching computations)
+
+With these two optimization strategies,
+FP _is typically_ faster than imperative solutions.
+**Anything else** is often better written imperatively or with a good optimized mix.
+
+---
+
+### ...development and maintenance?
+
+(or writing and reading)
+
+Because FP is flexible and abstraction is easy, you can get to the problem faster.
+Because FP provides naturally pure functions, testing and debugging is easier.
+These two strengths typically lead to faster development and easier maintenance!
+
+---
+
+### ...the learning?
+
+There are a new things to learn and get comfortable with.
+And the barrier to entry is high:
+
+- Scary math words can make FP hard to understand
+- Complex recursion can be hard to reason about
+- Combining functions into useful structures is an art
+
+You're learning an entirely new way to solve problems!
+This can be intimidating for some.
+
+---
+
+### Some further learning!
+
+- [Functional Programming Simplified](https://fpsimplified.com/) (_simply amazing_)
+- [F# for fun and profit](https://fsharpforfunandprofit.com/) (_comprehensive!_)
+- [Manning Books](https://www.manning.com/catalog) (_filter for 'functional'_)
+- Anything [Haskell](haskell.org) related (_as it's pedagogical in nature_)
+
+Lately, a lot of well-written
+[Medium](medium.com) articles on functional intros have appeared:
+
+- [Javascript](https://medium.com/the-renaissance-developer/concepts-of-functional-programming-in-javascript-6bc84220d2aa)
+- [PowerShell](https://medium.com/swlh/functional-programming-in-powershell-876edde1aadb)
+- [Python](https://medium.com/better-programming/introduction-to-functional-programming-in-python-3d26cd9cbfd7)
+
+---
+
+### Last Points
+
+Computers are _state-machines_ and _do not_ operate in a functional way!
+In the bare metal world, assembly rules for a reason.
+
+That is not saying FP and functional languages cannot be embedded.
+But, abstracting the state away means you need one thing to stay performant:
+_a really good compiler_
+
+---
+
+### Last Points
+
+Using FP in your imperative code can make libraries more testable, correct,
+and understandable.
+My recommendation is to use a hybrid programming style!
+Use imperative style coding mixed with FP practices where it will benefit your code.
+
+---
+
+### Last Points
+
+**The big takeaway**:
+FP, optimized for parallelism and memoization,
+and when used with lots of memory and processors,
+can _really_ speed up processing.
+Setting up concurrent and cached code is _much_ easier in FP than in other styles.
+
+Big data and machine learning folks, **FP is for you**.
+
+---
+
+### The Last Point
+
+I highly recommend F# for the previous reasons.
+
+It is cross-platform, and can be written purely functionally, or imperatively.
+It performs best with purely functional libraries backing
+object-orientated front-end code.
+
+I have started writing my libraries and .NET objects in F# while
+my front-end and GUI code is in C#.
+
+***
+
+## Questions?
+
+Send them to me via email!
+
+***
+
+## Sources
+
+<!-- markdownlint-disable md013 -->
+
+Sources are located in the html comments following this statement.
+<!-- Sources -->
+<!-- In order of first appearance; links are omitted -->
+<!-- 
+3. Grafera, Alexa. "Dancing Baby Groot". Published October 13, 2014, https://dribbble.com/shots/1764030-Dancing-Baby-Groot.
+6.1. Atkinson, Lincoln. "Rethinking findstr with F# and PowerShell". Published October 03, 2012, https://docs.microsoft.com/en-us/archive/blogs/fsharpteam/rethinking-findstr-with-f-and-powershell.
+7.1. Kernighan, Brian and Dennis Ritchie. The C Programming Language. Upper Saddle River: Pretince Hall, 1978.
+7.2. Common-Lisp.Net. 2019. "Welcome to Common-Lisp.net!" n.d. https://common-lisp.net/.
+7.3. Petricek, Tomas with Jon Skeet. Real-World Functional Programming. Greenwich, Connecticut: Manning Publications, 2010.
+10.3. Ford, Neal. "Content series: Functional thinking". Published August 30, 2011,  https://www.ibm.com/developerworks/java/library/j-ft5/.  
+10.7. Larriva, John. "Ian Malcolm: From Chaos". Published November 30, 2011, https://vialjarhorn.tumblr.com/post/13562072311/my-piece-for-the-jp-show-at-gallery-nucleus.
+11.7. Buonanno, Enrico. Functional Programming in C#. New York: Manning Publications, 2018.
+13. McCoy, Chris. "Oh Bother". Published July 5, 2013, https://tumblr.safelyendangered.com/post/54680954204/oh-bother.
+-->
+
+<!-- markdownlint-enable md013 -->
+
+Any image not attributed was drawn by the author.
+
+Lisp logo is from Common-Lisp.net and is provided via a
+[Creative Commons](https://creativecommons.org/licenses/by/4.0/) license.
