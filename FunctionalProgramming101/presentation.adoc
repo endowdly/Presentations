@@ -306,7 +306,7 @@ success or failure is immediately resolved (usually at compile time). "
 
 === Benefits of Immutability
 
-=== https://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning[Idempotent] code!
+==== https://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning[Idempotent] code!
 
 ...whoa, chief, that's a big word!
 Blame https://en.wikipedia.org/wiki/Benjamin_Peirce[Benjamin Pierce],
