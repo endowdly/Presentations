@@ -888,8 +888,8 @@ Send them to me via email!
 
 == Sources
 
-Sources are located in the source code following this statement.
-See `presentation.adoc`.
+Sources are located in the https://raw.githubusercontent.com/endowdly/Presentations/master/FunctionalProgramming101/presentation.adoc[source] following this statement.
+
 // Sources
 // In order of first appearance; links are omitted
 ////
