@@ -821,7 +821,7 @@ These two strengths typically lead to faster development and easier maintenance!
 
 === ...the learning?
 
-There are a new things to learn and get comfortable with.
+There are new things to learn and get comfortable with.
 And the barrier to entry is high:
 
 * Scary math words can make FP hard to understand

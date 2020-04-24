@@ -22,6 +22,7 @@
         "testing's"
     ],
     "cSpell.ignoreWords": [
+        "adoc",
         "ahhh",
         "customcss",
         "findstr",
@@ -35,6 +36,7 @@
         "ptime",
         "revealjs",
         "setattr",
-        "slidenumber"
+        "slidenumber",
+        "zenburn"
     ]
 }
