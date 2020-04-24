@@ -81,7 +81,7 @@ This focus drives the style away from state mutations and mutable data.
 
 Do you work with lots of data?
 Do you work with lots of processors?
-Do you want to take advance of all those processors to crunch that data _easily_?
+Do you want to take advantage of all those processors to crunch that data _easily_?
 
 Of course you do!
 
