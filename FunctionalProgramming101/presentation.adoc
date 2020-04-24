@@ -1,0 +1,910 @@
+= Functional Programming 101
+Ryan Dowd <ryan.dowd@navy.mil>
+v1.0, 2020-04-20
+:imagesdir: ./images
+:source-highlighter: highlightjs
+:highlightjsdir: ./highlightjs
+:highlightjs-theme: ./highlightjs/demo/styles/zenburn.css
+:customcss: custom.css
+:revealjs_theme: night
+:revealjs_slidenumber: true
+
+
+== Getting Started
+
+This presentation is built with
+https://github.com/asciidoctor/asciidoctor.js[Asciidoctor-js] and
+https://github.com/asciidoctor/asciidoctor-reveal.js[Asciidoctor-reveal].
+Asciidoctor-reveal is a frontend for https://revealjs.com/#/[Reveal.js].
+
+Navigating these waters:
+
+* `Spacebar`, or `n` to go forward
+* `p` to go backward
+* `Esc` to see an overview of all slides
+* `f` to go full screen
+
+=== Getting Started
+
+Keep an eye out for links in the slides! +
+These will link to more advanced topics and some references.
+
+== Overview
+
+* Who am I?
+* Who is this talk for?
+* Why should I care about functional programming?
+* What is Functional Programming?
+* Core Functional Concepts
+** Immutability
+** First-class functions
+** Higher-order functions
+** Recursion
+* But what about...?
+* Last Points
+* Questions
+
+== Introduction
+
+I am Ryan
+
+[#babygroot]
+image::babygroot.gif[Baby Groot Dance]
+// Grafera 2014, modified by me
+
+[.notes]
+--
+* BS EE USMA 2009
+* Started Crane in 2013 with WXQS
+* Currently WXQT
+* Deployed with MTRC 3 times
+--
+
+== Target Audience
+
+* Anyone who codes... anything
+* Anyone involved in data science or analysis
+* Anyone using or developing machine learning techniques/algorithms
+
+== What is Functional Programming?
+
+Functional programming ([.red]#FP#) is a declarative programming paradigm.
+It focuses on designing programs as an evaluation of mathematical functions.
+This focus drives the style away from state mutations and mutable data.
+
+=== Wait... what?
+
+* Functions are passed around like variables
+* You don't change variables
+
+== Why should I care?
+
+Do you work with lots of data?
+Do you work with lots of processors?
+Do you want to take advance of all those processors to crunch that data _easily_?
+
+Of course you do!
+
+=== ! 
+
+image::fsharpPtimeAn.png[Performance Graph]
+// Atkinson 2012, modified by me
+
+_Search-File:
+an FSharp cmdlet, optimized for parallel processing,
+running in PowerShell_
+
+[.notes]
+--
+* PowerShell is interpreted at runtime, to boot.
+* The "dir | Select-String" command is also PowerShell; see the difference?
+--
+
+== What is a Coding Paradigm?
+
+Simply, the style of how code is written and structured.
+These paradigms broadly define the features of a programming language.
+
+The two most common paradigms are _imperative_ and _declarative_.
+
+=== Imperative Paradigm
+
+This structure will instruct a program how to change its state.
+Procedural programming and object-oriented programming are common imperative styles.
+A classic example of an imperative language is C.
+
+image::c.png[C Logo]
+// Kernighan and Ritchie 1978, cover
+
+The essence of imperative programming is the _execution of statements_.
+
+[.notes]
+--
+* Other primarily imperative languages:
+* Java, ECMAScript or JavaScript, and PHP
+* Ada,
+* Python/Ruby,
+* and any assembly language.
+--
+
+=== Declarative Paradigm
+
+This structure declares the desired result as a series of expressions.
+Functional programming is a common declarative style.
+A classic example of a declarative language is Lisp.
+
+image::lisp.png[Lisp Logo]
+// Common-Lisp.net, n.d.
+
+The essence of declarative programming is the _evaluation of expressions_.
+
+[.notes]
+--
+* An even shorter list of examples:
+* SQL,
+* Haskell,
+* Scheme and Clojure),
+* ML/SML/OCaml/F#.
+--
+
+=== _Execution of Statements_ vs. _Evaluation of Expression_
+
+This is a little abstract.
+Let's clear that up by making some coffee, shall we?
+
+image::coffee.gif[Coffee]
+
+We'll make some coffee using the two different paradigms.
+Our design goal is to make a cup of coffee with two scoops of sugar.
+
+[.notes]
+--
+* Example borrowed from Petricek, Real World Functional Programming, 5.
+* Functional is data-centric
+* Imperative is behavior-centric
+--
+
+=== Object-Oriented Coffee
+
+We start with a single black coffee by executing a statement.
+The constructed object can be modified, so we can change it by adding two sugars.
+However, without additional guards, we may miss the goal with incorrect statements.
+
+[source, cs]
+----
+var cuppa = new Coffee(CoffeeType.Black);
+
+// Can execute cuppa.Drink() now
+// If executed, the following statement will execute on an empty cup
+// Without more complex defensive coding, we could miss the design goal!
+
+cuppa.AddSugar(2);
+----
+
+[.notes]
+--
+* Have to assume Coffee class exist!
+--
+
+=== Functional Coffee
+
+Here, we start with a single black coffee with 2 sugars by evaluating an expression.
+We cannot modify or drink the cup before the sugar is added.
+When we get the cup, it already contains the sugar!
+
+[source, fs]
+----
+let makeCoffee coffeeStyle sugars =    // this is a function describing our goal
+    { coffee with
+        Style = coffeeStyle
+        Sugar = sugars }
+
+let cuppa = makeCoffee Black 2         // The evaluation
+----
+
+[.notes]
+-- 
+* Have to assume Coffee type exists and coffee is defined!
+--
+
+=== One last example...
+
+[source, cs]
+----
+// Imperative
+bool myInt;
+if (x < 10)
+{
+    myInt = true;
+}
+else
+{
+    myInt = false;
+}
+
+// Declarative
+var myInt = x < 10 ? true : false;
+----
+
+== What does Functional Programming get me?
+
+Well, have you ever written or read code that is...
+
+* Difficult to change or refactor due to hidden dependencies?
+* Repeating patterns and boilerplate, e.g. visitor pattern
+* Full of race conditions or confusing execution orders?
+* Struggling to execute asynchronously or concurrently?
+* Behaving differently in real-world than it does in unit tests?
+
+Functional programming can _easily_ solve those common issues.
+
+=== How, exactly?
+
+[.step]
+* Immutability prevents race conditions
+* Logic vice executions enables parallelism
+* Composable functions prevent spaghetti code
+
+== Core Concepts
+
+* Immutability
+* Functions
+* Higher-Order Functions
+* Recursion
+
+== Immutability
+
+> Taking the vary out of variables
+
+Variables are initialized into a static, unchanging value.
+If a modification needs to occur, usually a shallow copy is made.
+Modification is made to the copy.
+
+=== Mutable Example
+
+[source, cs]
+----
+int x = GetInitialValue();
+x = x + ReadInt32();
+x = x * ReadInt32();
+WriteInt32(res);
+----
+
+=== Immutable Mutable Example
+
+Now, pretend the compiler won't let us overwrite an initialized value.
+
+[source, cs]
+----
+int x0 = GetInitialValue();
+int x1 = x0 + ReadInt32();
+int x2 = x1 * ReadInt32();
+WriteInt32(x2);
+----
+
+=== Benefits of Immutability
+
+==== Assurance
+
+"In other words, testing's real purpose is to validate mutation —
+and the more mutation you have,
+the more testing is required to make sure you get it right.
+If you isolate the places where changes occur by severely restricting mutation,
+you create a much smaller space for errors to occur..."
+-- Neal Ford, IBM
+
+=== Benefits of Immutability
+
+==== Thread-Safety and Parallelism
+
+"Immutable objects are automatically thread-safe and have no synchronization issues.
+They can also never exist in unknown or undesirable state because of an exception...
+[This is called] _failure atomicity_:
+once an object or type is constructed,
+success or failure is immediately resolved (usually at compile time). "
+-- Neal Ford, IBM
+
+=== Benefits of Immutability
+
+=== https://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning[Idempotent] code!
+
+...whoa, chief, that's a big word!
+Blame https://en.wikipedia.org/wiki/Benjamin_Peirce[Benjamin Pierce],
+an American mathematician.
+Around 1870, he coined the term to describe a function that is strictly repeatable.
+
+Idempotent code means the same input will _always_ return the same output.
+It's often called
+https://en.wikipedia.org/wiki/Referential_transparency[referential transparency]
+now-a-days.
+
+=== How do we do it?
+
+==== Convention
+
+In this approach, you don't do any extra work to _prevent_ mutation.
+You just _avoid_ it --
+just like how you probably avoid `goto`, bitwise operations, and pointers now!
+
+The downside, of course, is mutation can find a way!
+
+=== !
+
+[link=https://github.com/asciidoctor/asciidoctor.js]
+image::life.png[Ian Malcolm]
+
+=== How do we do it?
+
+==== Use a functional language!
+
+[source, fs]
+----
+// F#
+let a = 42  // immutable by default
+
+// immutable types with sugary copying
+type Engineer =
+    { FirstName: string
+      LastName: string }
+
+let someEmployee = { FirstName = "Jane"; LastName = "Doe" }
+let someOtherEmployee = { someEmployee with FirstName = "John" }
+----
+
+=== How do we do it?
+
+==== Structural Enforcement
+
+...a term I've coined to describe using structural keywords/features to employ immutability.
+
+* Java has `final`
+* C# has `readonly`, `sealed`, and `protected`
+* Python\Ruby\Lua have a concept of `metaclasses` that work well (albeit verbose)
+* Python also has the `@property` tag
+
+[.notes]
+--
+A huge downside: usually lots of boilerplate
+--
+
+=== Structural Enforcement
+
+====  C# 6.0
+
+[source, cs]
+----
+public protected class Engineer
+{
+    public string FirstName { get; }
+    public string LastName { get; }
+
+    public Engineer(string f, string l)
+    {
+        FirstName = f;
+        LastName = l;
+    }
+}
+
+var someEmployee = new Engineer("Jane", "Doe");
+var someOtherEmployee = new Engineer("John", "Doe");
+// These new engineers cannot be changed!
+----
+
+[.notes]
+--
+It is simple to implement the `with` sugar in the class,
+but that's a lesson for another day!
+--
+
+=== Structural Enforcement
+
+==== Python 3.1
+
+[source, py]
+----
+def immutable_meta(name, bases, dct):
+    class Meta(type):
+        def __init__(cls, name, bases, dct):
+            type.__setattr__(cls,"attr",set(dct.keys()))
+            type.__init__(cls, name, bases, dct)
+
+        def __setattr__(cls, attr, value):
+            if attr not in cls.attr:
+                raise AttributeError ("Cannot assign attributes to this class")
+            return type.__setattr__(cls, attr, value)
+    return Meta(name, bases, dct)
+
+class Engineer:
+    __metaclass__ = immutable_meta
+    name = "John Doe"  # Or however python works...
+----
+
+Dealing with metatables and metaclasses can be burdensome!
+
+=== !
+
+As you can see from the structural examples,
+some imperative languages don't make it easy to make objects immutable.
+Dynamically-typed languages like Python are especially offensive.
+We can't all be as cool as C#.  
+¯\\_(ツ)_/¯
+
+
+=== Shadowing
+
+To avoid floor-plate hell...
+
+[source, lua]
+----
+-- Lua
+function read(x, key)
+  return x[key]
+end
+
+function write(x, key, value)
+  local newTable = table.unpack(x) -- a built-in, shallow copy
+  newTable[key] = value
+
+  -- the original value, x, is unchanged
+  return newTable
+end
+----
+
+[.notes]
+--
+Lua, incidentally,
+lso uses floor-plate hell to implement structural enforcement via metatables.
+A lot of modern functional languages actually do shadowing in the background!
+--
+
+== Functions
+
+The ideas and patterns of functional programming are rooted in mathematical functions,
+especially https://en.wikipedia.org/wiki/Lambda_calculus[lambda calculus].
+
+Unlike procedural methods, functional functions have two properties:
+
+* Always return the same output value for a given input value
+* A function has no side effects (purity)
+
+[.notes]
+--
+Fun fact, hashtables and maps are functions!
+--
+
+=== Purity and why it matters
+
+If a function becomes pure and deterministic
+then their logic is easy to abstract and reason about (testing and debugging is trivial),
+and order of evaluation becomes unimportant (concurrency is trivial).
+Therefore, purity allows functions to be optimized!
+
+=== What optimizations?
+
+Concurrency:: 
+Running tasks in parallel or in multiple threads
+
+Lazy evaluation::
+Values only need to evaluated when they are needed
+
+Memoization::
+Cache the result of a computation so it's only ever evaluated once
+
+=== Impure Functions
+
+A function is impure if it:
+
+[.step]
+* Mutates the global state
+* Mutates any of its input arguments
+* Throws an exception
+* Performs any I/O
+
+=== Impure Functions
+
+What do they look like?
+
+[source, cs]
+----
+int y;  // this gets mutated!
+
+void SideEffectCity(out int x, int n)  // out is a special reference (&) call
+{
+    x = n;
+}
+
+SideEffectCity(out y, 3);  // y is now 3
+----
+
+=== Impure Functions
+
+It is rather impossible to eliminate all side effects.
+So let's use some strategies to manage them!
+The easiest to accomplish are _isolation_ and _avoidance_.
+
+=== Isolating I/O
+
+[source, cs]
+----
+// Avoid!
+Console.WriteLine("Enter your name");
+var name = Console.ReadLine();
+Console.WriteLine($"Hello {name}");  // This is something we can isolate!
+
+// Do instead
+static string Greet(string name) => $"Hello {name}";  // ahhh purity.
+----
+
+Of course, now there isn't any I/O!
+Well, I'll leave the implementation up to you, but you'd ideally want...
+
+=== Ideal I/O Isolation
+
+image::enrico.jpg[Pure I/O]
+// Buonanmo 2018
+
+=== Avoid Mutating Arguments
+
+A common pattern in imperative code
+tightly couples the behavior of a method to the caller:
+the caller then relies on the method to perform its side effect,
+and the callee relies on the caller to initialize its arguments!
+
+Basically, both methods must be aware of the implementation details of the other;
+it is impossible to reason about the methods separately.
+
+=== Avoid Mutating Arguments
+
+[source, cs]
+----
+// Avoid
+decimal RecomputeTotal(Order order, List<OrderLine> linesToDelete)
+{
+    var result = 0m;
+    foreach (var line in order.OrderLines)
+        if (line.Quantity == 0) linesToDelete.Add(line);
+        else result += line.Product.Price * line.Quantity;
+    return result;
+}
+
+// We can avoid this coupling by returning ALL info to the caller
+// I hope you understand what tuples are...
+(decimal, IEnumerable<OrderLine>) RecomputeTotal(Order order) =>
+    (
+        order.OrderLines.Sum(line => line.Product.Price * line.Quantity)
+    ,   order.OrderLines.Where(line => line.Quantity == 0)
+    );
+----
+
+[.notes]
+--
+* Tuples are neat!
+* Other data objects like hashtables, object arrays, or interfaces can be a replacement.
+--
+
+== Higher-Order Functions
+
+A https://en.wikipedia.org/wiki/Higher-order_function[higher-order]
+function is a function that either
+receives a function as a parameter or
+returns a function.
+
+=== !
+
+When functions are first-class objects,
+parameterization of functions becomes inevitable.
+Not only is it inevitable,
+but it's incredibly useful.
+
+=== Why are those useful?
+
+You can abstract code, ensuring correctness.
+You can more easily understand and control flow.
+
+=== How does abstraction help with correctness?
+
+Which looks more correct?
+
+[source, cs]
+----
+// Loop
+int total = 0;
+int count = 1;
+while (count <= 10) {
+    total += count;
+    ++count;
+}
+Console.WriteLine(total);
+----
+
+[source, cs]
+----
+// Higher-Order Function
+Console.WriteLine(Sum(Range(1, 10)));
+----
+
+=== !
+
+I argue the second is likely more correct.
+Its solution is expressed in a vocabulary that ties to the problem being solved.
+Summing a range of numbers isn’t about loops and counters.
+It is about ranges and sums.
+
+=== What about control flow?
+
+Functional higher-order functions have proven to be so useful,
+they've bled over into imperative languages.
+The **big four** are certainly ubiquitous (they have their own Wikipedia pages) and
+you've surely seen them:
+
+=== ! 
+
+https://en.wikipedia.org/wiki/Map_(higher-order_function)[Map]::
+Moves a collection of types from one type to another using a function.
+Also lift, project, https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.select[Select].
+
+https://en.wikipedia.org/wiki/Filter_(higher-order_function)[Filter]::
+Takes a collection and a predicate
+and returns the members of the collection that meet the predicate.
+Also https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where[Where].
+
+https://en.wikipedia.org/wiki/Monad_(functional_programming)#Bind[Bind]::
+Takes a https://en.wikipedia.org/wiki/Monad_(functional_programming)[monad]
+and a function,
+extracts the inner value of a monad and returns the result of the function.
+Also flatMap, chain, collect, https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.selectmany[SelectMany]
+
+https://en.wikipedia.org/wiki/Fold_(higher-order_function)[Fold]::
+Takes a structure, a seed, and a reducer function.
+Traverses the structure starting with a seed and applies the reducer.
+Also https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.aggregate[Aggregate], reduce.
+https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.sum[Sum] is a specific implementation of this.
+
+[.notes]
+--
+I haven't gone over monads and will not.
+They are slightly more advanced.
+--
+
+=== Higher-order functions in action
+
+[source, cs]
+----
+// Old School
+var nums = new int[] { 0, 1, 2, 3, 5 };
+
+var result = 0;
+foreach (int n in nums)
+    result += n;
+
+return result;
+----
+
+[source, cs]
+----
+// Functionally with higher-order functions
+var newSchool =  nums.Aggregate(0, (result, element) => result + element);
+
+// Sum exists in Linq
+var optimo = nums.Sum();
+----
+
+=== !
+
+Higher-order functions also enable
+https://fsharpforfunandprofit.com/posts/function-composition/[functional composition],
+https://fsharpforfunandprofit.com/posts/currying/[currying],
+https://fsharpforfunandprofit.com/posts/partial-application/[partial application],
+and https://fsharpforfunandprofit.com/posts/recipe-part2/[railroading].
+These techniques and topics are little beyond an introduction,
+but I want you to be aware of them.
+Use your functions like LEGOs, and build exciting structures with them!
+
+== Recursion
+
+[link=https://tumblr.safelyendangered.com/post/54680954204/oh-bother]
+image::recursion.gif[Nightmare]
+// McCoy 2013
+
+_It's the stuff of nightmares..._
+
+=== !
+
+By now you've seen values that don't change.
+You've seen a rigid state.
+At this point, even a novice programmer may be asking,
+"So then how does anything change?
+How would a program progress?
+Without counters or mutation you can't loop or iterate anything!"
+
+Lo, not all is lost.
+For your savior lies in functions!
+Not only can functions call other functions,
+they can call **themselves**.
+
+=== ! 
+
+As a consequence of immutability and purity,
+functional languages utilize recursion because they have to!
+
+In functional languages,
+the strict purity allows compilers to use recursion more aggressively.
+Tail call optimizations and clever assembly ops keep performance nominal.
+
+=== Recursion vs. Iteration
+
+[source, cs]
+----
+// Classic iterative example
+public static int CalculateSumIteratively(int from, int to)
+{
+    int sum = from;
+
+    for (int i = 1; i <= to; i++)
+    {
+        sum += i;
+    }
+
+    return sum;
+}
+----
+
+=== Recursion vs. Iteration
+
+[source, cs]
+----
+// Although local mutation occurs, this function is still pure!
+public static int CalculateSumRecursively(int from, int to)
+{
+    int sum = from;
+
+    if (from < to)
+    {
+        from++;
+        return sum += CalculateSumRecursively(from, to);
+    }
+
+    return sum;
+}
+----
+
+=== Recursion vs. Iteration
+
+Can we refactor the last function to follow FP _more_ closely?
+
+[source, cs]
+----
+public static int CalculateSumRecursively(int from, int to) =>
+    (from < to)
+        ? from + CalculateSumRecursively(from + 1, to)
+        : from
+----
+
+=== Benefits of Recursion
+
+==== Pros
+
+[.step]
+* Recursion is better at tree traversal
+* Recursion can add clarity to code
+* _With_ memoization, recursion can reduce time complexity
+
+=== Benefits of Recursion
+
+==== Cons
+
+[.step]
+* Recursion needs more memory (recursion uses a lot of stack frames)
+* _Without_ an optimized compiler or memoization, recursion can be slow
+
+== Okay, but what about...
+
+=== ...performance?
+
+==== Where FP does well:
+
+* Parallel computing (multi-thread, multi-processor)
+* High-memory hardware capitalizing on memoization (caching computations)
+
+With these two optimization strategies,
+FP _is typically_ faster than imperative solutions.
+**Anything else** is often better written imperatively or with a good optimized mix.
+
+
+=== ...development and maintenance?
+
+(or writing and reading)
+
+Because FP is flexible and abstraction is easy, you can get to the problem faster.
+Because FP provides naturally pure functions, testing and debugging is easier.
+These two strengths typically lead to faster development and easier maintenance!
+
+=== ...the learning?
+
+There are a new things to learn and get comfortable with.
+And the barrier to entry is high:
+
+* Scary math words can make FP hard to understand
+* Complex recursion can be hard to reason about
+* Combining functions into useful structures is an art 
+ 
+You're learning an entirely new way to solve problems!
+This can be intimidating for some.
+
+=== Some further learning!
+
+* https://fpsimplified.com/[Functional Programming Simplified] (_simply amazing_)
+* https://fsharpforfunandprofit.com/[F# for fun and profit] (_comprehensive!_)
+* https://www.manning.com/catalog[Manning Books] (_filter for 'functional'_)
+* Anything http://haskell.org[Haskell] related (_as it's pedagogical in nature_)
+
+Lately, a lot of well-written
+http://medium.com[Medium] articles on functional intros have appeared:
+
+* https://medium.com/the-renaissance-developer/concepts-of-functional-programming-in-javascript-6bc84220d2aa[Javascript]
+* https://medium.com/swlh/functional-programming-in-powershell-876edde1aadb[PowerShell]
+* https://medium.com/better-programming/introduction-to-functional-programming-in-python-3d26cd9cbfd7[Python]
+
+=== Last Points
+
+Computers are _state-machines_ and _do not_ operate in a functional way!
+In the bare metal world, assembly rules for a reason.
+
+That is not saying FP and functional languages cannot be embedded.
+But, abstracting the state away means you need one thing to stay performant:
+_a really good compiler_
+
+=== Last Points
+
+Using FP in your imperative code can make libraries more testable, correct,
+and understandable.
+My recommendation is to use a hybrid programming style!
+Use imperative style coding mixed with FP practices where it will benefit your code.
+
+=== Last Points
+
+**The big takeaway**:
+FP, optimized for parallelism and memoization,
+and when used with lots of memory and processors,
+can _really_ speed up processing.
+Setting up concurrent and cached code is _much_ easier in FP than in other styles.
+
+Big data and machine learning folks, **FP is for you**.
+
+=== The Last Point
+
+I highly recommend F# for the previous reasons.
+
+It is cross-platform, and can be written purely functionally, or imperatively.
+It performs best with purely functional libraries backing
+object-orientated front-end code.
+
+I have started writing my libraries and .NET objects in F# while
+my front-end and GUI code is in C#.
+
+== Questions?
+
+Send them to me via email!
+
+== Sources
+
+Sources are located in the source code following this statement.
+See `presentation.adoc`.
+// Sources
+// In order of first appearance; links are omitted
+////
+3. Grafera, Alexa. "Dancing Baby Groot". Published October 13, 2014, https://dribbble.com/shots/1764030-Dancing-Baby-Groot.
+6.1. Atkinson, Lincoln. "Rethinking findstr with F# and PowerShell". Published October 03, 2012, https://docs.microsoft.com/en-us/archive/blogs/fsharpteam/rethinking-findstr-with-f-and-powershell.
+7.1. Kernighan, Brian and Dennis Ritchie. The C Programming Language. Upper Saddle River: Pretince Hall, 1978.
+7.2. Common-Lisp.Net. 2019. "Welcome to Common-Lisp.net!" n.d. https://common-lisp.net/.
+7.3. Petricek, Tomas with Jon Skeet. Real-World Functional Programming. Greenwich, Connecticut: Manning Publications, 2010.
+10.3. Ford, Neal. "Content series: Functional thinking". Published August 30, 2011,  https://www.ibm.com/developerworks/java/library/j-ft5/.  
+10.7. Larriva, John. "Ian Malcolm: From Chaos". Published November 30, 2011, https://vialjarhorn.tumblr.com/post/13562072311/my-piece-for-the-jp-show-at-gallery-nucleus.
+11.7. Buonanno, Enrico. Functional Programming in C#. New York: Manning Publications, 2018.
+13. McCoy, Chris. "Oh Bother". Published July 5, 2013, https://tumblr.safelyendangered.com/post/54680954204/oh-bother.
+////
+
+Any image not attributed was drawn by the author.
+
+Lisp logo is from Common-Lisp.net and is provided via a
+https://creativecommons.org/licenses/by/4.0/[Creative Commons] license.

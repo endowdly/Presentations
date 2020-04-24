@@ -1,0 +1,16 @@
+#babygroot {
+    transform: scale(0.5);
+}
+
+#nightmare {
+    transform: scale(0.83);
+}
+
+.reveal {
+    font: "Droid Sans Mono";
+    font-size: 20px; 
+}
+
+.red {
+    color: red;
+}

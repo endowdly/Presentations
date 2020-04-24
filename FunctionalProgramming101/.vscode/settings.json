@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "Alexa",
+        "Asciidoctor",
         "Buonanmo",
         "Buonanno",
         "Grafera",
@@ -22,12 +23,18 @@
     ],
     "cSpell.ignoreWords": [
         "ahhh",
+        "customcss",
         "findstr",
+        "highlightjs",
+        "highlightjsdir",
+        "imagesdir",
         "metaclass",
         "metatables",
         "nums",
         "optimo",
         "ptime",
-        "setattr"
+        "revealjs",
+        "setattr",
+        "slidenumber"
     ]
 }

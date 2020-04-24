@@ -1,0 +1,22 @@
+-- FsReveal hasn't been updated in a bit, and Github integration piece is busted
+
+Convert FsReveal -> Asciidoctor-reveal.js:
+    ✔ Remove all F# tooling @done(20-04-23 17:24)
+    
+    ✔ Init node @started(20-04-23 17:29) @done(20-04-23 17:29) @lasted(59s)
+
+    Get Dependencies:
+        ✔ asciidoctor.js 2.0 @done(20-04-23 17:29)
+        ✔ asciidoctor-reveal @done(20-04-23 17:29)
+
+    ✔ Move slides/ -> . @started(20-04-23 17:31) @done(20-04-23 17:31) @lasted(35s)
+
+    ✔ Convert index.md -> presentation.adoc @started(20-04-23 17:31) @done(20-04-23 19:57) @lasted(2h26m16s)
+
+-- Asciidoctor-reveal was updated in March
+-- It no longer requires a manual converter!
+
+    ✔ presentation.adoc -> presentation.html @done(20-04-23 20:00)
+
+    
+
